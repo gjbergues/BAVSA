@@ -45,22 +45,30 @@ def empty_function(name):
     TABLA = '@TABLA_' + name
     create_html_bavsa(name, TABLA)
 
+# ##################################################################################
+# ############################# NO GARANTIZADO #####################################
+# ##################################################################################
+
 
 def no_garantizado(data):
-    # ##################################################################################
-    # ############################# NEGOCIADA #########################################
-    # ##################################################################################
+    # #####################################################
+    # #################### NEGOCIADA ######################
+    # #####################################################
 
     df = data.query('Segmento == "No Garantizado"')
     df = df.query('Estado == ["Negociada"]')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
+
     if df.empty:
         path = 'tables/empty_table.html'
         with open(path, 'r') as f:
             new_html = str(f.read())
 
-        table_list = ['negociada_NG_CPD.html', 'negociada_NG_ECHEQ.html', 'negociada_NG_FCE.html',
-                      'negociada_NG_PAGARE.html', 'negociada_NG_TODOS.html']
+        table_list = ['negociada_NG_CPD.html',
+                      'negociada_NG_ECHEQ.html',
+                      'negociada_NG_FCE.html',
+                      'negociada_NG_PAGARE.html',
+                      'negociada_NG_TODOS.html']
 
         for name in table_list:
             path = 'tables/' + name
@@ -73,101 +81,81 @@ def no_garantizado(data):
         create_html_bavsa('negociada_NG_PAGARE', '@TABLA_negociada_NG_PAGARE')
         create_html_bavsa('negociada_NG_TODOS', '@TABLA_negociada_NG_TODOS')
     else:
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=CPD ######################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # #########################################################
+        # ######## Librador - PPV - Of. V. - Tipo = CPD ###########
+        # #########################################################
 
         # Put the table in function of CPD
-        df2 = df.query('Tipo == ["CPD"]')
+        df_cpd = df.query('Tipo == ["CPD"]')
 
-        if df2.empty:
+        if df_cpd.empty:
             empty_function('negociada_NG_CPD')
         else:
             # Pivot table
-            table_cpd = pivot_ofv(df2, 'Librador')
+            table_cpd = pivot_ofv(df_cpd, 'Librador')
 
             # Table to html
             table_cpd.to_html('tables/negociada_NG_CPD.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NG_CPD', '@TABLA_negociada_NG_CPD')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=ECHEQ ######################
-        # ##################################################################################
+        # ############################################################
+        # ######### Librador - PPV - Of. V. - Tipo = ECHEQ ###########
+        # ############################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # Put the table in function of ECHEQ
+        df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-        # Put the table in function of CPD
-        df2 = df.query('Tipo == ["ECHEQ"]')
-
-        if df2.empty:
+        if df_echeq.empty:
             empty_function('negociada_NG_ECHEQ')
         else:
             # Pivot table
-            table_echeq = pivot_ofv(df2, 'Librador')
+            table_echeq = pivot_ofv(df_echeq, 'Librador')
 
             # Table to html
             table_echeq.to_html('tables/negociada_NG_ECHEQ.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NG_ECHEQ', '@TABLA_negociada_NG_ECHEQ')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=FCE ######################
-        # ##################################################################################
+        # ###############################################################
+        # ########## Librador - PPV - Of. V. - Tipo = FCE ###############
+        # ###############################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # Put the table in function of FCE
+        df_fce = df.query('Tipo == ["FCE"]')
 
-        # Put the table in function of CPD
-        df2 = df.query('Tipo == ["FCE"]')
-
-        if df2.empty:
+        if df_fce.empty:
             empty_function('negociada_NG_FCE')
         else:
             # Pivot table
-            table_fce = pivot_ofv(df2, 'Librador')
+            table_fce = pivot_ofv(df_fce, 'Librador')
 
             # Table to html
             table_fce.to_html('tables/negociada_NG_FCE.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NG_FCE', '@TABLA_negociada_NG_FCE')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=PAGARE ######################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # ###############################################################
+        # ######### Librador - PPV - Of. V. - Tipo = PAGARE #############
+        # ###############################################################
 
         # Put the table in function of PAGARE
-        df2 = df.query('Tipo == ["PAGARE"]')
+        df_pag = df.query('Tipo == ["PAGARE"]')
 
-        if df2.empty:
+        if df_pag.empty:
             empty_function('negociada_NG_PAGARE')
         else:
             # Pivot table
-            table_pag = pivot_ofv(df2, 'Librador')
+            table_pag = pivot_ofv(df_pag, 'Librador')
 
             # Table to html
             table_pag.to_html('tables/negociada_NG_PAGARE.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NG_PAGARE', '@TABLA_negociada_NG_PAGARE')
 
-        # ##################################################################################
-        # #################### librador - PPV - Of. V. - Tipo = TODOS  #################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # ###############################################################
+        # ########### librador - PPV - Of. V. - Tipo = TODOS  ###########
+        # ###############################################################
 
         if df.empty:
             empty_function('negociada_NG_TODOS')
@@ -180,9 +168,9 @@ def no_garantizado(data):
             # Add table to bavsa web
             create_html_bavsa('negociada_NG_TODOS', '@TABLA_negociada_NG_TODOS')
 
-    # ##################################################################################
+    # ################################################################################
     # ############################# DESIERTA #########################################
-    # ##################################################################################
+    # ################################################################################
 
     df = data.query('Segmento == "No Garantizado"')
     df = df.query('Estado == ["Desierta"]')
@@ -192,92 +180,99 @@ def no_garantizado(data):
         with open(path, 'r') as f:
             new_html = str(f.read())
 
-        table_list = ['desierta_NG_CPD.html', 'desierta_NG_ECHEQ.html',
-                      'desierta_NG_PAGARE.html', 'desierta_NG_TODOS.html']
+        table_list = ['desierta_NG_CPD.html',
+                      'desierta_NG_ECHEQ.html',
+                      'desierta_NG_PAGARE.html',
+                      'desierta_NG_FCE.html',
+                      'desierta_NG_TODOS.html']
 
         for name in table_list:
             path = 'tables/' + name
             with open(path, 'w') as f:
                 f.write(new_html)
-        # Add table to bavsa web
+        # Add table to BAVSA web
         create_html_bavsa('desierta_NG_CPD', '@TABLA_desierta_NG_CPD')
         create_html_bavsa('desierta_NG_ECHEQ', '@TABLA_desierta_NG_ECHEQ')
         create_html_bavsa('desierta_NG_PAGARE', '@TABLA_desierta_NG_PAGARE')
+        create_html_bavsa('desierta_NG_FCE', '@TABLA_desierta_NG_FCE')
         create_html_bavsa('desierta_NG_TODOS', '@TABLA_desierta_NG_TODOS')
     else:
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=CPD ######################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # ###############################################################
+        # ############ Librador - PPV - Of. V. - Tipo = CPD #############
+        # ###############################################################
 
         # Put the table in function of CPD
-        df2 = df.query('Tipo == ["CPD"]')
+        df_cpd = df.query('Tipo == ["CPD"]')
 
-        if df2.empty:
+        if df_cpd.empty:
             empty_function('desierta_NG_CPD')
         else:
             # Pivot table
-            table_cpd = pivot_ofv(df2, 'Librador')
+            table_cpd = pivot_ofv(df_cpd, 'Librador')
 
             # Table to html
             table_cpd.to_html('tables/desierta_NG_CPD.html')
             # Add table to bavsa web
             create_html_bavsa('desierta_NG_CPD', '@TABLA_desierta_NG_CPD')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=ECHEQ ######################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # ############################################################
+        # ########## Librador - PPV - Of. V. - Tipo = ECHEQ ##########
+        # ############################################################
 
         # Put the table in function of ECHEQ
-        df2 = df.query('Tipo == ["ECHEQ"]')
+        df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-        if df2.empty:
+        if df_echeq.empty:
             empty_function('desierta_NG_ECHEQ')
         else:
             # Pivot table
-            table_echeq = pivot_ofv(df2, 'Librador')
+            table_echeq = pivot_ofv(df_echeq, 'Librador')
 
             # Table to html
             table_echeq.to_html('tables/desierta_NG_ECHEQ.html')
             # Add table to bavsa web
             create_html_bavsa('desierta_NG_ECHEQ', '@TABLA_desierta_NG_ECHEQ')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=PAGARE ######################
-        # ##################################################################################
+        # ##############################################################
+        # ########## Librador - PPV - Of. V. - Tipo = PAGARE ###########
+        # ##############################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
-
-        df2 = df.query('Tipo == ["PAGARE"]')
-        table_pag_monto = df2.pivot_table(index='Librador', columns=['PPV'], values='Monto')
+        # Put the table in function of PAGARE
+        df_pag = df.query('Tipo == ["PAGARE"]')
+        table_pag_monto = df_pag.pivot_table(index='Librador', columns=['PPV'], values='Monto')
 
         if table_pag_monto.empty:
             empty_function('desierta_NG_PAGARE')
         else:
             # Pivot table
-            table_pag = pivot_ofv(df2, 'Librador')
+            table_pag = pivot_ofv(df_pag, 'Librador')
 
             # Table to html
             table_pag.to_html('tables/desierta_NG_PAGARE.html')
             # Add table to bavsa web
             create_html_bavsa('desierta_NG_PAGARE', '@TABLA_desierta_NG_PAGARE')
 
-        # ##################################################################################
-        # #################### librador - PPV - Of. V. - Tipo = TODOS  #################
-        # ##################################################################################
+        # #############################################################
+        # ########## Librador - PPV - Of. V. - Tipo = FCE #############
+        # ##############################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # Put the table in function of FCE
+        df_fce = df.query('Tipo == ["FCE"]')
+
+        if df_fce.empty:
+            empty_function('desierta_NG_FCE')
+        else:
+            # Pivot table
+            table_cpd = pivot_ofv(df_fce, 'Librador')
+
+            # Table to html
+            table_cpd.to_html('tables/desierta_NG_FCE.html')
+            # Add table to bavsa web
+            create_html_bavsa('desierta_NG_FCE', '@TABLA_desierta_NG_FCE')
+
+        # ############################################################
+        # ######### librador - PPV - Of. V. - Tipo = TODOS  ##########
+        # ############################################################
 
         if df.empty:
             empty_function('desierta_NG_TODOS')
@@ -291,21 +286,28 @@ def no_garantizado(data):
             create_html_bavsa('desierta_NG_TODOS', '@TABLA_desierta_NG_TODOS')
 
 
+# ##################################################################################
+# ######################### NO GARANTIZADO EPYME ###################################
+# ##################################################################################
+
+
 def no_Garantizado_epyme(data):
-    # ##################################################################################
-    # ############################# NEGOCIADA #########################################
-    # ##################################################################################
+    # ##########################################################
+    # ###################### NEGOCIADA #########################
+    # ##########################################################
 
     df = data.query('Segmento == "No Garantizado E.PYME"')
     df = df.query('Estado == ["Negociada"]')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
+
     if df.empty:
         path = 'tables/empty_table.html'
         with open(path, 'r') as f:
             new_html = str(f.read())
 
-        table_list = ['negociada_NGE_CPD.html', 'negociada_NGE_ECHEQ.html',
-                      'negociada_NGE_PAGARE.html', 'negociada_NGE_TODOS.html']
+        table_list = ['negociada_NGE_CPD.html',
+                      'negociada_NGE_ECHEQ.html',
+                      'negociada_NGE_TODOS.html']
 
         for name in table_list:
             path = 'tables/' + name
@@ -316,74 +318,65 @@ def no_Garantizado_epyme(data):
         create_html_bavsa('negociada_NGE_ECHEQ', '@TABLA_negociada_NGE_ECHEQ')
         create_html_bavsa('negociada_NGE_TODOS', '@TABLA_negociada_NGE_TODOS')
     else:
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=CPD ######################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # #################################################################
+        # ############ Librador - PPV - Of. V. - Tipo = CPD ###############
+        # #################################################################
 
         # Put the table in function of CPD
-        df2 = df.query('Tipo == ["CPD"]')
-        if df2.empty:
+        df_cpd = df.query('Tipo == ["CPD"]')
+
+        if df_cpd.empty:
             empty_function('negociada_NGE_CPD')
         else:
             # Pivot table
-            table_cpd = pivot_ofv(df2, 'Librador')
+            table_cpd = pivot_ofv(df_cpd, 'Librador')
 
             # Table to html
             table_cpd.to_html('tables/negociada_NGE_CPD.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NGE_CPD', '@TABLA_negociada_NGE_CPD')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=ECHEQ ######################
-        # ##################################################################################
+        # #############################################################
+        # ########## Librador - PPV - Of. V. - Tipo = ECHEQ ###########
+        # #############################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # Put the table in function of ECHEQ
+        df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-        # Put the table in function of CPD
-        df2 = df.query('Tipo == ["ECHEQ"]')
-        if df2.empty:
+        if df_echeq.empty:
             empty_function('negociada_NGE_ECHEQ')
         else:
             # Pivot table
-            table_echeq = pivot_ofv(df2, 'Librador')
+            table_echeq = pivot_ofv(df_echeq, 'Librador')
 
             # Table to html
             table_echeq.to_html('tables/negociada_NGE_ECHEQ.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NGE_ECHEQ', '@TABLA_negociada_NGE_ECHEQ')
 
-        # ##################################################################################
-        # #################### librador - PPV - Of. V. - Tipo = TODOS  #################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # ################################################################
+        # ########### librador - PPV - Of. V. - Tipo = TODOS  ############
+        # ################################################################
 
         if df.empty:
             empty_function('negociada_NGE_TODOS')
         else:
             # Pivot table
-            table_todos = pivot_ofv(df2, 'Librador')
+            table_todos = pivot_ofv(df, 'Librador')
 
             # Table to html
             table_todos.to_html('tables/negociada_NGE_TODOS.html')
             # Add table to bavsa web
             create_html_bavsa('negociada_NGE_TODOS', '@TABLA_negociada_NGE_TODOS')
 
-    # ##################################################################################
+    # ################################################################################
     # ############################# DESIERTA #########################################
-    # ##################################################################################
+    # ################################################################################
 
     df = data.query('Segmento == "No Garantizado E.PYME"')
     df = df.query('Estado == ["Desierta"]')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
+
     if df.empty:
         path = 'tables/empty_table.html'
         with open(path, 'r') as f:
@@ -400,61 +393,51 @@ def no_Garantizado_epyme(data):
         create_html_bavsa('desierta_NGE_ECHEQ', '@TABLA_desierta_NGE_ECHEQ')
         create_html_bavsa('desierta_NGE_TODOS', '@TABLA_desierta_NGE_TODOS')
     else:
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=CPD ######################
-        # ##################################################################################
-
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # #######################################################################
+        # ############### Librador - PPV - Of. V. - Tipo = CPD ##################
+        # #######################################################################
 
         # Put the table in function of CPD
-        df2 = df.query('Tipo == ["CPD"]')
+        df_cpd = df.query('Tipo == ["CPD"]')
 
-        if df2.empty:
+        if df_cpd.empty:
             empty_function('desierta_NGE_CPD')
         else:
             # Pivot table
-            table_cpd = pivot_ofv(df2, 'Librador')
+            table_cpd = pivot_ofv(df_cpd, 'Librador')
 
             # Table to html
             table_cpd.to_html('tables/desierta_NGE_CPD.html')
             # Add table to bavsa web
             create_html_bavsa('desierta_NGE_CPD', '@TABLA_desierta_NGE_CPD')
 
-        # ##################################################################################
-        # #################### Librador - PPV - Of. V. - Tipo=ECHEQ ######################
-        # ##################################################################################
+        # #################################################################
+        # ########## Librador - PPV - Of. V. - Tipo = ECHEQ ###############
+        # #################################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
+        # Put the table in function of ECHEQ
+        df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-        # Put the table in function of CPD
-        df2 = df.query('Tipo == ["ECHEQ"]')
-        if df2.empty:
+        if df_echeq.empty:
             empty_function('desierta_NGE_ECHEQ')
         else:
             # Pivot table
-            table_echeq = pivot_ofv(df2, 'Librador')
+            table_echeq = pivot_ofv(df_echeq, 'Librador')
 
             # Table to html
             table_echeq.to_html('tables/desierta_NGE_ECHEQ.html')
             # Add table to bavsa web
             create_html_bavsa('desierta_NGE_ECHEQ', '@TABLA_desierta_NGE_ECHEQ')
 
-        # ##################################################################################
-        # #################### librador - PPV - Of. V. - Tipo = TODOS  #################
-        # ##################################################################################
+        # ####################################################################
+        # ############ librador - PPV - Of. V. - Tipo = TODOS  ###############
+        # ####################################################################
 
-        # #####################################################################
-        # Create pivot table Monto
-        # ########################
         if df.empty:
             empty_function('desierta_NGE_TODOS')
         else:
             # Pivot table
-            table_todos = pivot_ofv(df2, 'Librador')
+            table_todos = pivot_ofv(df, 'Librador')
 
             # Table to html
             table_todos.to_html('tables/desierta_NGE_TODOS.html')
@@ -499,77 +482,69 @@ def ppv_columns(table):
     return table
 
 
-def negociada(data):
-    # ##################################################################################
-    # ############################# NEGOCIADA #########################################
-    # ##################################################################################
+def avalado_negociada(data):
+    # ##############################################################################
+    # ############################# NEGOCIADA ######################################
+    # ##############################################################################
 
     df = data.query('Estado == ["Negociada"]')
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo=CPD ######################
-    # ##################################################################################
-
-    # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # #################################################################
+    # ############ Razón Social - PPV - Of. V. - Tipo = CPD ###########
+    # #################################################################
 
     # Put the table in function of CPD
-    df2 = df.query('Tipo == ["CPD"]')
+    df_cpd = df.query('Tipo == ["CPD"]')
 
-    # Pivot table
-    table_cpd = pivot_ofv(df2, 'Razón Social de la SGR')
+    if df_cpd.empty:
+        empty_function('negociada_CPD')
+    else:
+        # Pivot table
+        table_cpd = pivot_ofv(df_cpd, 'Razón Social de la SGR')
 
-    # Table to html
-    table_cpd.to_html('tables/negociada_CPD.html')
-    # Add table to bavsa web
-    create_html_bavsa('negociada_CPD', '@TABLA_negociada_CPD')
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo=ECHEQ ####################
-    # ##################################################################################
+        # Table to html
+        table_cpd.to_html('tables/negociada_CPD.html')
+        # Add table to bavsa web
+        create_html_bavsa('negociada_CPD', '@TABLA_negociada_CPD')
 
-    # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # ####################################################################
+    # ######### Razón Social - PPV - Of. V. - Tipo = ECHEQ ###############
+    # ####################################################################
 
     # Put the table in function of ECHEQ
-    df3 = df.query('Tipo == ["ECHEQ"]')
+    df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-    # Pivot table
-    table_echeq = pivot_ofv(df3, 'Razón Social de la SGR')
+    if df_echeq.empty:
+        empty_function('negociada_ECHEQ')
+    else:
+        # Pivot table
+        table_echeq = pivot_ofv(df_echeq, 'Razón Social de la SGR')
 
-    # Table to html
-    table_echeq.to_html('tables/negociada_ECHEQ.html')
-    # Add table to bavsa web
-    create_html_bavsa('negociada_ECHEQ', '@TABLA_negociada_ECHEQ')
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo=PAGARE ####################
-    # ##################################################################################
+        # Table to html
+        table_echeq.to_html('tables/negociada_ECHEQ.html')
+        # Add table to bavsa web
+        create_html_bavsa('negociada_ECHEQ', '@TABLA_negociada_ECHEQ')
 
-    # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # ########################################################################
+    # ########### Razón Social - PPV - Of. V. - Tipo = PAGARE ################
+    # ########################################################################
 
     # Put the table in function of PAGARE
-    df4 = df.query('Tipo == ["PAGARE"]')
+    df_pag = df.query('Tipo == ["PAGARE"]')
 
-    if df4.empty:
+    if df_pag.empty:
         empty_function('negociada_PAGARE')
     else:
         # Pivot table
-        table_pag = pivot_ofv(df4, 'Razón Social de la SGR')
+        table_pag = pivot_ofv(df_pag, 'Razón Social de la SGR')
 
         # Table to html
         table_pag.to_html('tables/negociada_PAGARE.html')
         # Add table to bavsa web
         create_html_bavsa('negociada_PAGARE', '@TABLA_negociada_PAGARE')
 
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo = TODOS  #################
-    # ##################################################################################
-
     # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # ########### Razón Social - PPV - Of. V. - Tipo = TODOS  #############
+    # #####################################################################
 
     # Pivot table
     table_todos = pivot_ofv(df, 'Razón Social de la SGR')
@@ -580,95 +555,70 @@ def negociada(data):
     create_html_bavsa('negociada_TODOS', '@TABLA_negociada_TODOS')
 
 
-def desierta(data):
-    # ##################################################################################
+def avalado_desierta(data):
+    # ################################################################################
     # ############################# DESIERTA #########################################
-    # ##################################################################################
+    # ################################################################################
 
     df = data.query('Estado == ["Desierta"]')
 
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo=CPD ######################
-    # ##################################################################################
-
     # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # ########### Razón Social - PPV - Of. V. - Tipo = CPD ################
+    # #####################################################################
 
     # Put the table in function of CPD
-    df2 = df.query('Tipo == ["CPD"]')
+    df_cpd = df.query('Tipo == ["CPD"]')
 
-    # Pivot table
-    table_cpd = pivot_ofv(df2, 'Razón Social de la SGR')
-
-    # Table to html
-    table_cpd.to_html('tables/desierta_CPD.html')
-    # Add table to bavsa web
-    create_html_bavsa('desierta_CPD', '@TABLA_desierta_CPD')
-
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo=ECHEQ ####################
-    # ##################################################################################
-
-    df = data.query('Estado == ["Desierta"]')
-    df5 = df.query('Segmento == ["No Garantizado"]')
-    df5 = df.query('Tipo == ["FCE"]')
-
-    df5 = df5.rename(columns={'SGR / Librador': 'Librador'})
-
-    if df5.empty:
-        empty_function('desierta_NG_FCE')
+    if df_cpd.empty:
+        empty_function('desierta_CPD')
     else:
-        print(df5)
         # Pivot table
-        table_cpd = pivot_ofv(df5, 'Librador')
+        table_cpd = pivot_ofv(df_cpd, 'Razón Social de la SGR')
 
         # Table to html
-        table_cpd.to_html('tables/desierta_NG_FCE.html')
+        table_cpd.to_html('tables/desierta_CPD.html')
         # Add table to bavsa web
-        create_html_bavsa('desierta_NG_FCE', '@TABLA_desierta_NG_FCE')
+        create_html_bavsa('desierta_CPD', '@TABLA_desierta_CPD')
 
-    # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # ######################################################################
+    # ############ Razón Social - PPV - Of. V. - Tipo= ECHEQ ###############
+    # ######################################################################
 
     # Put the table in function of ECHEQ
-    df3 = df.query('Tipo == ["ECHEQ"]')
-    # Pivot table
-    table_echeq = pivot_ofv(df3, 'Razón Social de la SGR')
+    df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-    # Table to html
-    table_echeq.to_html('tables/desierta_ECHEQ.html')
-    # Add table to bavsa web
-    create_html_bavsa('desierta_ECHEQ', '@TABLA_desierta_ECHEQ')
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo=PAGARE ####################
-    # ##################################################################################
+    if df_echeq.empty:
+        empty_function('desierta_ECHEQ')
+    else:
+        # Pivot table
+        table_echeq = pivot_ofv(df_echeq, 'Razón Social de la SGR')
 
-    # #####################################################################
-    # Create pivot table Monto
-    # ########################
+        # Table to html
+        table_echeq.to_html('tables/desierta_ECHEQ.html')
+        # Add table to bavsa web
+        create_html_bavsa('desierta_ECHEQ', '@TABLA_desierta_ECHEQ')
+
+    # #########################################################################
+    # ########## Razón Social - PPV - Of. V. - Tipo = PAGARE ##################
+    # #########################################################################
 
     # Put the table in function of PAGARE
-    df4 = df.query('Tipo == ["PAGARE"]')
-    if df4.empty:
+    df_pag = df.query('Tipo == ["PAGARE"]')
+
+    if df_pag.empty:
         empty_function('desierta_PAGARE')
     else:
         # Pivot table
-        table_pag = pivot_ofv(df4, 'Razón Social de la SGR')
+        table_pag = pivot_ofv(df_pag, 'Razón Social de la SGR')
 
         # Table to html
         table_pag.to_html('tables/desierta_PAGARE.html')
         # Add table to bavsa web
         create_html_bavsa('desierta_PAGARE', '@TABLA_desierta_PAGARE')
 
-    # ##################################################################################
-    # #################### Razón Social - PPV - Of. V. - Tipo = TODOS  #################
-    # ##################################################################################
-
-    # #####################################################################
-    # Create pivot table Monto
-    # ########################
+    # #######################################################################
+    # ############## Razón Social - PPV - Of. V. - Tipo = TODOS  ############
+    # #######################################################################
 
     # Pivot table
     table_todos = pivot_ofv(df, 'Razón Social de la SGR')
@@ -710,14 +660,14 @@ def pivot_monto(df, index_val):
 
 def monto(data):
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = CPD #####################
-    # ##################################################################################
+    # #######################################################
+    # ########## AVALADO - Monto - Tipo = CPD ###############
+    # #######################################################
 
-    df = data.query('Tipo == ["CPD"]')
+    df_cpd = data.query('Tipo == ["CPD"]')
 
     # Create pivot table DESIERTA - NEGADA
-    table_dn = pivot_monto(df, 'Razón Social de la SGR')
+    table_dn = pivot_monto(df_cpd, 'Razón Social de la SGR')
 
     monto_cpd_des = table_dn.loc["Total", "Desierta"]
     monto_cpd_neg = table_dn.loc["Total", "Negociada"]
@@ -726,14 +676,15 @@ def monto(data):
     table_dn.to_html('tables/monto_CPD.html')
     # Add table to bavsa web
     create_html_bavsa('monto_CPD', '@TABLA_monto_CPD')
-    # ##################################################################################
-    # ################ Desierta - Negociada - Monto - Tipo = ECHEQ #####################
-    # ##################################################################################
 
-    df = data.query('Tipo == ["ECHEQ"]')
+    # ########################################################
+    # ####### AVALADO - Monto - Tipo = ECHEQ #################
+    # ########################################################
+
+    df_echeq = data.query('Tipo == ["ECHEQ"]')
 
     # Create pivot table DESIERTA - NEGADA
-    table_dn = pivot_monto(df, 'Razón Social de la SGR')
+    table_dn = pivot_monto(df_echeq, 'Razón Social de la SGR')
 
     monto_echeq_des = table_dn.loc["Total", "Desierta"]
     monto_echeq_neg = table_dn.loc["Total", "Negociada"]
@@ -742,14 +693,15 @@ def monto(data):
     table_dn.to_html('tables/monto_ECHEQ.html')
     # Add table to bavsa web
     create_html_bavsa('monto_ECHEQ', '@TABLA_monto_ECHEQ')
-    # ##################################################################################
-    # ################ Desierta - Negociada - Monto - Tipo = PAGARE ####################
-    # ##################################################################################
 
-    df = data.query('Tipo == ["PAGARE"]')
+    # ########################################################
+    # ####### AVALADO - Monto - Tipo = PAGARE ################
+    # ########################################################
+
+    df_pag = data.query('Tipo == ["PAGARE"]')
 
     # Create pivot table DESIERTA - NEGADA
-    table_dn = df.pivot_table(index='Razón Social de la SGR', columns='Estado', values='Monto', aggfunc=np.sum)\
+    table_dn = df_pag.pivot_table(index='Razón Social de la SGR', columns='Estado', values='Monto', aggfunc=np.sum)\
         .reset_index()
     table_dn.columns.name = None
 
@@ -771,9 +723,10 @@ def monto(data):
     table_dn.to_html('tables/monto_PAGARE.html')
     # Add table to bavsa web
     create_html_bavsa('monto_PAGARE', '@TABLA_monto_PAGARE')
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = TODOS #####################
-    # ##################################################################################
+
+    # ######################################################
+    # ####### AVALADO - Monto - Tipo = TODOS ###############
+    # ######################################################
 
     # Create pivot table DESIERTA - NEGADA
     table_dn = pivot_monto(data, 'Razón Social de la SGR')
@@ -786,21 +739,25 @@ def monto(data):
     # Add table to bavsa web
     create_html_bavsa('monto_TODOS', '@TABLA_monto_TODOS')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NG CPD #####################
-    # ##################################################################################
+    # #############################################################
+    # ######## NO GARANTIZADO - Monto - Tipo =  CPD ###############
+    # #############################################################
 
-    df = data.query('Tipo == ["CPD"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select NO GARANTIZADO
+    df = data.query('Segmento == "No Garantizado"')
 
-    if df.empty:
+    # Select CPD
+    df_cpd = df.query('Tipo == ["CPD"]')
+
+    df_cpd = df_cpd.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_cpd.empty:
         empty_function('monto_NG_CPD')
         monto_NG_CPD_des = 0
         monto_NG_CPD_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_monto(df, 'Librador')
+        table_dn = pivot_monto(df_cpd, 'Librador')
 
         monto_NG_CPD_des = table_dn.loc["Total", "Desierta"]
         monto_NG_CPD_neg = table_dn.loc["Total", "Negociada"]
@@ -810,21 +767,22 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NG_CPD', '@TABLA_monto_NG_CPD')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NG ECHEQ #####################
-    # ##################################################################################
+    # ###########################################################
+    # ###### NO GARANTIZADO - Monto - Tipo = ECHEQ ##############
+    # ###########################################################
 
-    df = data.query('Tipo == ["ECHEQ"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select ECHEQ
+    df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-    if df.empty:
+    df_echeq = df_echeq.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_echeq.empty:
         empty_function('monto_NG_ECHEQ')
         monto_NG_ECHEQ_des = 0
         monto_NG_ECHEQ_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_monto(df, 'Librador')
+        table_dn = pivot_monto(df_echeq, 'Librador')
 
         monto_NG_ECHEQ_des = table_dn.loc["Total", "Desierta"]
         monto_NG_ECHEQ_neg = table_dn.loc["Total", "Negociada"]
@@ -833,21 +791,22 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NG_ECHEQ', '@TABLA_monto_NG_ECHEQ')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NG FCE #####################
-    # ##################################################################################
+    # ###############################################################
+    # ########## NO GARANTIZADO - Monto - Tipo = FCE ################
+    # ###############################################################
 
-    df = data.query('Tipo == ["FCE"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select FCE
+    df_fce = df.query('Tipo == ["FCE"]')
 
-    if df.empty:
+    df_fce = df_fce.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_fce.empty:
         empty_function('monto_NG_FCE')
         monto_NG_FCE_des = 0
         monto_NG_FCE_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_monto(df, 'Librador')
+        table_dn = pivot_monto(df_fce, 'Librador')
 
         monto_NG_FCE_des = table_dn.loc["Total", "Desierta"]
         monto_NG_FCE_neg = table_dn.loc["Total", "Negociada"]
@@ -856,15 +815,16 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NG_FCE', '@TABLA_monto_NG_FCE')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NG PAGARE ###############
-    # ##################################################################################
+    # #########################################################################
+    # ################## NO GARANTIZADO - Monto - Tipo = PAGARE ###############
+    # #########################################################################
 
-    df = data.query('Tipo == ["PAGARE"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select PAGARE
+    df_pag = df.query('Tipo == ["PAGARE"]')
 
-    table_dn = df.pivot_table(index='Librador', columns='Estado', values='Monto', aggfunc=np.sum) \
+    df_pag = df_pag.rename(columns={'SGR / Librador': 'Librador'})
+
+    table_dn = df_pag.pivot_table(index='Librador', columns='Estado', values='Monto', aggfunc=np.sum) \
         .reset_index()
 
     if table_dn.empty:
@@ -873,7 +833,7 @@ def monto(data):
         monto_NG_PAGARE_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_monto(df, 'Librador')
+        table_dn = pivot_monto(df_pag, 'Librador')
 
         monto_NG_PAGARE_des = table_dn.loc["Total", "Desierta"]
         monto_NG_PAGARE_neg = table_dn.loc["Total", "Negociada"]
@@ -884,11 +844,10 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NG_PAGARE', '@TABLA_monto_NG_PAGARE')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NG TODOS #####################
-    # ##################################################################################
+    # ##############################################################################
+    # ################## NO GARANTIZADO - Monto - Tipo = TODOS #####################
+    # ##############################################################################
 
-    df = data.query('Segmento == "No Garantizado"')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
 
     if df.empty:
@@ -907,20 +866,24 @@ def monto(data):
         create_html_bavsa('monto_NG_TODOS', '@TABLA_monto_NG_TODOS')
 
     # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NGE CPD #####################
+    # ################## NO GARANTIZADO EPYME - Monto - Tipo = CPD #####################
     # ##################################################################################
 
-    df = data.query('Tipo == ["CPD"]')
-    df = df.query('Segmento == "No Garantizado E.PYME"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select NO GARANTIZADO EPYME
+    df = data.query('Segmento == "No Garantizado E.PYME"')
 
-    if df.empty:
+    # Select CPD
+    df_cpd = df.query('Tipo == ["CPD"]')
+
+    df_cpd = df_cpd.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_cpd.empty:
         empty_function('monto_NGE_CPD')
         monto_NGE_CPD_des = 0
         monto_NGE_CPD_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_monto(df, 'Librador')
+        table_dn = pivot_monto(df_cpd, 'Librador')
 
         monto_NGE_CPD_des = table_dn.loc["Total", "Desierta"]
         monto_NGE_CPD_neg = table_dn.loc["Total", "Negociada"]
@@ -929,21 +892,22 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NGE_CPD', '@TABLA_monto_NGE_CPD')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NGE ECHEQ #####################
-    # ##################################################################################
+    # ###################################################################
+    # ######### NO GARANTIZADO EPYME - Monto - Tipo = ECHEQ #############
+    # ###################################################################
 
-    df = data.query('Tipo == ["ECHEQ"]')
-    df = df.query('Segmento == "No Garantizado E.PYME"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select ECHEQ
+    df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-    if df.empty:
+    df_echeq = df_echeq.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_echeq.empty:
         empty_function('monto_NGE_ECHEQ')
         monto_NGE_ECHEQ_des = 0
         monto_NGE_ECHEQ_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_monto(df, 'Librador')
+        table_dn = pivot_monto(df_echeq, 'Librador')
 
         monto_NGE_ECHEQ_des = table_dn.loc["Total", "Desierta"]
         monto_NGE_ECHEQ_neg = table_dn.loc["Total", "Negociada"]
@@ -952,11 +916,10 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NGE_ECHEQ', '@TABLA_monto_NGE_ECHEQ')
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NG TODOS #####################
-    # ##################################################################################
+    # ########################################################################
+    # ######## NO GARANTIZADO EPYME - Monto - Tipo = TODOS ###################
+    # ########################################################################
 
-    df = data.query('Segmento == "No Garantizado E.PYME"')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
 
     if df.empty:
@@ -975,11 +938,14 @@ def monto(data):
         # Add table to bavsa web
         create_html_bavsa('monto_NGE_TODOS', '@TABLA_monto_NGE_TODOS')
 
-    list_montos = [monto_cpd_des, monto_cpd_neg, monto_echeq_des, monto_echeq_neg, monto_pag_des,
-                   monto_todos_des, monto_todos_neg, monto_NG_CPD_des, monto_NG_CPD_neg, monto_NG_ECHEQ_des,
-                   monto_NG_ECHEQ_neg, monto_NG_FCE_des, monto_NG_FCE_neg, monto_NG_PAGARE_des, monto_NG_PAGARE_neg,
-                   monto_NG_TODOS_des, monto_NG_TODOS_neg, monto_NGE_CPD_des, monto_NGE_CPD_neg, monto_NGE_ECHEQ_des,
-                   monto_NGE_ECHEQ_neg, monto_NGE_TODOS_des, monto_NGE_TODOS_neg]
+    list_montos = [monto_cpd_des, monto_cpd_neg, monto_echeq_des,
+                   monto_echeq_neg, monto_pag_des, monto_todos_des,
+                   monto_todos_neg, monto_NG_CPD_des, monto_NG_CPD_neg,
+                   monto_NG_ECHEQ_des, monto_NG_ECHEQ_neg, monto_NG_FCE_des,
+                   monto_NG_FCE_neg, monto_NG_PAGARE_des, monto_NG_PAGARE_neg,
+                   monto_NG_TODOS_des, monto_NG_TODOS_neg, monto_NGE_CPD_des,
+                   monto_NGE_CPD_neg, monto_NGE_ECHEQ_des, monto_NGE_ECHEQ_neg,
+                   monto_NGE_TODOS_des, monto_NGE_TODOS_neg]
 
     add_monto_tohtml_bavsa(list_montos)
 
@@ -1014,47 +980,38 @@ def pivot_cheques(df, index_val):
 
 
 def cant_cheques(data):
-    # ##################################################################################
-    # ################## Desierta - Negociada   - Tipo = CPD #####################
-    # ##################################################################################
+    # ###################################################
+    # ######## AVALADO - Tipo = CPD #####################
+    # ###################################################
 
-    df = data.query('Tipo == ["CPD"]')
+    df_cpd = data.query('Tipo == ["CPD"]')
 
     # Create pivot table DESIERTA - NEGADA
-    table_dn = pivot_cheques(df, 'Razón Social de la SGR')
+    table_dn = pivot_cheques(df_cpd, 'Razón Social de la SGR')
 
     cheques_cpd_des = table_dn.loc["Total", "Desierta"]
     cheques_cpd_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_CPD.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_CPD', '@TABLA_cheque_CPD')
-    # ##################################################################################
-    # ################ Desierta - Negociada - Tipo = ECHEQ #####################
-    # ##################################################################################
+    # #####################################################
+    # ######## AVALADO - Tipo = ECHEQ #####################
+    # #####################################################
 
-    df = data.query('Tipo == ["ECHEQ"]')
+    df_echeq = data.query('Tipo == ["ECHEQ"]')
 
     # Create pivot table DESIERTA - NEGADA
-    table_dn = pivot_cheques(df, 'Razón Social de la SGR')
+    table_dn = pivot_cheques(df_echeq, 'Razón Social de la SGR')
 
     cheques_echeq_des = table_dn.loc["Total", "Desierta"]
     cheques_echeq_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_ECHEQ.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_ECHEQ', '@TABLA_cheque_ECHEQ')
+    # #########################################################
+    # ####### AVALADO - Monto - Tipo = PAGARE #################
+    # #########################################################
 
-    # ##################################################################################
-    # ################ Desierta - Negociada - Monto - Tipo = PAGARE ####################
-    # ##################################################################################
-
-    df = data.query('Tipo == ["PAGARE"]')
+    df_pag = data.query('Tipo == ["PAGARE"]')
 
     # Create pivot table DESIERTA - NEGADA
-    table_dn = df.pivot_table(index='Razón Social de la SGR', columns='Estado', values='Cheques', aggfunc=np.sum) \
+    table_dn = df_pag.pivot_table(index='Razón Social de la SGR', columns='Estado', values='Cheques', aggfunc=np.sum) \
         .reset_index()
     table_dn.columns.name = None
 
@@ -1072,14 +1029,9 @@ def cant_cheques(data):
 
     cheques_pag_des = table_dn.loc["Total", "Desierta"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_PAGARE.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_PAGARE', '@TABLA_cheque_PAGARE')
-
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = TODOS #####################
-    # ##################################################################################
+    # ###########################################################
+    # ###### AVALADO - Monto - Tipo = TODOS #####################
+    # ###########################################################
 
     # Create pivot table DESIERTA - NEGADA
     table_dn = pivot_cheques(data, 'Razón Social de la SGR')
@@ -1087,89 +1039,76 @@ def cant_cheques(data):
     cheques_todos_des = table_dn.loc["Total", "Desierta"]
     cheques_todos_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_TODOS.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_TODOS', '@TABLA_cheque_TODOS')
+    # ###########################################################
+    # ######### NO GARANTIZADO - Tipo = CPD #####################
+    # ###########################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Tipo = NG CPD #####################
-    # ##################################################################################
+    # Select NO GARANTIZADO
+    df = data.query('Segmento == "No Garantizado"')
 
-    df = data.query('Tipo == ["CPD"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select CPD
+    df_cpd = df.query('Tipo == ["CPD"]')
 
-    if df.empty:
+    df_cpd = df_cpd.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_cpd.empty:
         cheques_NG_CPD_des = 0
         cheques_NG_CPD_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_cheques(df, 'Librador')
+        table_dn = pivot_cheques(df_cpd, 'Librador')
 
         cheques_NG_CPD_des = table_dn.loc["Total", "Desierta"]
         cheques_NG_CPD_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NG_CPD.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NG_CPD', '@TABLA_cheque_NG_CPD')
+    # ############################################################
+    # ######## NO GARANTIZADO - Tipo = ECHEQ #####################
+    # ############################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Tipo = NG ECHEQ #####################
-    # ##################################################################################
+    # Select ECHEQ
+    df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-    df = data.query('Tipo == ["ECHEQ"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    df_echeq = df_echeq.rename(columns={'SGR / Librador': 'Librador'})
 
-    if df.empty:
+    if df_echeq.empty:
         cheques_NG_ECHEQ_des = 0
         cheques_NG_ECHEQ_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_cheques(df, 'Librador')
+        table_dn = pivot_cheques(df_echeq, 'Librador')
 
         cheques_NG_ECHEQ_des = table_dn.loc["Total", "Desierta"]
         cheques_NG_ECHEQ_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NG_ECHEQ.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NG_ECHEQ', '@TABLA_cheque_NG_ECHEQ')
+    # ######################################################
+    # #### NO GARANTIZADO - Tipo = FCE #####################
+    # ######################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Tipo = NG FCE #####################
-    # ##################################################################################
+    # Select FCE
+    df_fce = df.query('Tipo == ["FCE"]')
 
-    df = data.query('Tipo == ["FCE"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    df_fce = df_fce.rename(columns={'SGR / Librador': 'Librador'})
 
-    if df.empty:
+    if df_fce.empty:
         cheques_NG_FCE_des = 0
         cheques_NG_FCE_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_cheques(df, 'Librador')
+        table_dn = pivot_cheques(df_fce, 'Librador')
 
         cheques_NG_FCE_des = table_dn.loc["Total", "Desierta"]
         cheques_NG_FCE_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NG_FCE.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NG_FCE', '@TABLA_cheque_NG_FCE')
+    # ####################################################
+    # ##### NO GARANTIZADO - Tipo = PAGARE ###############
+    # ####################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Tipo = NG PAGARE ###############
-    # ##################################################################################
+    # Select PAGARE
+    df_pag = df.query('Tipo == ["PAGARE"]')
 
-    df = data.query('Tipo == ["PAGARE"]')
-    df = df.query('Segmento == "No Garantizado"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    df_pag = df_pag.rename(columns={'SGR / Librador': 'Librador'})
 
-    table_dn = df.pivot_table(index='Librador', columns='Estado', values='Cheques', aggfunc=np.sum) \
+    table_dn = df_pag.pivot_table(index='Librador', columns='Estado', values='Cheques', aggfunc=np.sum) \
         .reset_index()
 
     if table_dn.empty:
@@ -1177,21 +1116,15 @@ def cant_cheques(data):
         cheques_NG_PAGARE_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_cheques(df, 'Librador')
+        table_dn = pivot_cheques(df_pag, 'Librador')
 
         cheques_NG_PAGARE_des = table_dn.loc["Total", "Desierta"]
         cheques_NG_PAGARE_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NG_PAGARE.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NG_PAGARE', '@TABLA_cheque_NG_PAGARE')
+    # ###############################################################
+    # ######## NO GARANTIZADO - Tipo = NG TODOS #####################
+    # ###############################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Tipo = NG TODOS #####################
-    # ##################################################################################
-
-    df = data.query('Segmento == "No Garantizado"')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
 
     if df.empty:
@@ -1204,62 +1137,51 @@ def cant_cheques(data):
         cheques_NG_TODOS_des = table_dn.loc["Total", "Desierta"]
         cheques_NG_TODOS_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NG_TODOS.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NG_TODOS', '@TABLA_cheque_NG_TODOS')
+    # ########################################################
+    # ###### NO GARANTIZADO EPYME - Tipo = CPD ###############
+    # ########################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Tipo = NGE CPD #####################
-    # ##################################################################################
+    # Select NO GARANTIZADO EPYME
+    df = data.query('Segmento == "No Garantizado E.PYME"')
 
-    df = data.query('Tipo == ["CPD"]')
-    df = df.query('Segmento == "No Garantizado E.PYME"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    # Select CPD
+    df_cpd = df.query('Tipo == ["CPD"]')
 
-    if df.empty:
+    df_cpd = df_cpd.rename(columns={'SGR / Librador': 'Librador'})
+
+    if df_cpd.empty:
         cheques_NGE_CPD_des = 0
         cheques_NGE_CPD_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_cheques(df, 'Librador')
+        table_dn = pivot_cheques(df_cpd, 'Librador')
 
         cheques_NGE_CPD_des = table_dn.loc["Total", "Desierta"]
         cheques_NGE_CPD_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NGE_CPD.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NGE_CPD', '@TABLA_cheque_NGE_CPD')
+    # ###############################################################
+    # ### NO GARANTIZADO EPYME - Monto - Tipo = ECHEQ ###############
+    # ###############################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada - Monto - Tipo = NGE ECHEQ #####################
-    # ##################################################################################
+    # Select ECHEQ
+    df_echeq = df.query('Tipo == ["ECHEQ"]')
 
-    df = data.query('Tipo == ["ECHEQ"]')
-    df = df.query('Segmento == "No Garantizado E.PYME"')
-    df = df.rename(columns={'SGR / Librador': 'Librador'})
+    df_echeq = df_echeq.rename(columns={'SGR / Librador': 'Librador'})
 
-    if df.empty:
+    if df_echeq.empty:
         cheques_NGE_ECHEQ_des = 0
         cheques_NGE_ECHEQ_neg = 0
     else:
         # Create pivot table DESIERTA - NEGADA
-        table_dn = pivot_cheques(df, 'Librador')
+        table_dn = pivot_cheques(df_echeq, 'Librador')
 
         cheques_NGE_ECHEQ_des = table_dn.loc["Total", "Desierta"]
         cheques_NGE_ECHEQ_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NGE_ECHEQ.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NGE_ECHEQ', '@TABLA_cheque_NGE_ECHEQ')
+    # #################################################################
+    # ####### NO GARANTIZADO EPYME - Tipo = TODOS #####################
+    # #################################################################
 
-    # ##################################################################################
-    # ################## Desierta - Negociada- Tipo = NG TODOS #####################
-    # ##################################################################################
-
-    df = data.query('Segmento == "No Garantizado E.PYME"')
     df = df.rename(columns={'SGR / Librador': 'Librador'})
 
     if df.empty:
@@ -1272,17 +1194,16 @@ def cant_cheques(data):
         cheques_NGE_TODOS_des = table_dn.loc["Total", "Desierta"]
         cheques_NGE_TODOS_neg = table_dn.loc["Total", "Negociada"]
 
-    # Table to html
-    # table_dn.to_html('tables/cheque_NGE_TODOS.html')
-    # Add table to bavsa web
-    # create_html_bavsa('cheque_NGE_TODOS', '@TABLA_cheque_NGE_TODOS')
-
-    list_cheques = [cheques_cpd_des, cheques_cpd_neg, cheques_echeq_des, cheques_echeq_neg, cheques_pag_des,
-                    cheques_todos_des, cheques_todos_neg, cheques_NG_CPD_des, cheques_NG_CPD_neg, cheques_NG_ECHEQ_des,
-                    cheques_NG_ECHEQ_neg, cheques_NG_FCE_des, cheques_NG_FCE_neg, cheques_NG_PAGARE_des,
-                    cheques_NG_PAGARE_neg, cheques_NG_TODOS_des, cheques_NG_TODOS_neg, cheques_NGE_CPD_des,
+    list_cheques = [cheques_cpd_des, cheques_cpd_neg, cheques_echeq_des,
+                    cheques_echeq_neg, cheques_pag_des, cheques_todos_des,
+                    cheques_todos_neg, cheques_NG_CPD_des, cheques_NG_CPD_neg,
+                    cheques_NG_ECHEQ_des, cheques_NG_ECHEQ_neg, cheques_NG_FCE_des,
+                    cheques_NG_FCE_neg, cheques_NG_PAGARE_des, cheques_NG_PAGARE_neg,
+                    cheques_NG_TODOS_des, cheques_NG_TODOS_neg, cheques_NGE_CPD_des,
                     cheques_NGE_CPD_neg, cheques_NGE_ECHEQ_des, cheques_NGE_ECHEQ_neg,
                     cheques_NGE_TODOS_des, cheques_NGE_TODOS_neg]
+
+    print(list_cheques)
 
     add_cheque_tohtml_bavsa(list_cheques)
 
@@ -1361,12 +1282,14 @@ def add_monto_tohtml_bavsa(data):
     with open('tables/bavsa.html', 'r') as f:
         static = str(f.read())
 
-    tag_list = ["@monto_cpd_des", "@monto_cpd_neg", "@monto_echeq_des", "@monto_echeq_neg", "@monto_pag_des",
-                "@monto_todos_des", "@monto_todos_neg", "@monto_NG_CPD_des", "@monto_NG_CPD_neg", "@monto_NG_ECHEQ_des",
-                "@monto_NG_ECHEQ_neg", "@monto_NG_FCE_des", "@monto_NG_FCE_neg", "@monto_NG_PAGARE_des",
-                "@monto_NG_PAGARE_neg", "@monto_NG_TODOS_des", "@monto_NG_TODOS_neg", "@monto_NGE_CPD_des",
-                "@monto_NGE_CPD_neg", "@monto_NGE_ECHEQ_des", "@monto_NGE_ECHEQ_neg", "@monto_NGE_TODOS_des",
-                "@monto_NGE_TODOS_neg"]
+    tag_list = ["@monto_cpd_des", "@monto_cpd_neg", "@monto_echeq_des",
+                "@monto_echeq_neg", "@monto_pag_des", "@monto_todos_des",
+                "@monto_todos_neg", "@monto_NG_CPD_des", "@monto_NG_CPD_neg",
+                "@monto_NG_ECHEQ_des", "@monto_NG_ECHEQ_neg", "@monto_NG_FCE_des",
+                "@monto_NG_FCE_neg", "@monto_NG_PAGARE_des", "@monto_NG_PAGARE_neg",
+                "@monto_NG_TODOS_des", "@monto_NG_TODOS_neg", "@monto_NGE_CPD_des",
+                "@monto_NGE_CPD_neg", "@monto_NGE_ECHEQ_des", "@monto_NGE_ECHEQ_neg",
+                "@monto_NGE_TODOS_des", "@monto_NGE_TODOS_neg"]
 
     name = "bavsa"
 
@@ -1395,7 +1318,7 @@ def save_doc_to_html(str_table, file_name):
 
 def main():
     # Fix file
-    #file_name = 'subastas.xlsx'
+    # file_name = 'subastas.xlsx'
     file_name = 'excelf.xlsx'
     file_path = 'excel/'
 
@@ -1414,9 +1337,9 @@ def main():
     # Call FUNCTIONS
 
     # html negociada
-    negociada(data)
+    avalado_negociada(data)
     # html desierta
-    desierta(data)
+    avalado_desierta(data)
     # NO Garantizado
     no_garantizado(data)
     # NO Garantizado EPYME
