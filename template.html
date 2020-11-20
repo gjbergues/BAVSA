@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Exchange</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/b-1.6.2/b-html5-1.6.2/datatables.min.css"/>
+	<style>
+		body { padding-top: 90px; }
+		.ocultar {
+			display: none
+		}
+		.mostrar {
+			display: bock
+		}
+		.fontsmall {
+			font-size:small
+		}
+		th {
+			padding:2px !important;
+		}
+		#graficos img {
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+		}
+	</style>
+	<link rel="icon" type="image/png" href="./img/favicon.png">
+	<link href="./css/loader.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<!--<script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css">
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.png" width="40%">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#inicio">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#graficos">Graficos</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="center-screen" id="divloader">
+      <div class="loader">
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__ball"></div>
+      </div>
+      <br>
+      <font>BAVSA</font>
+  </div>
+
+<div id="main" role="main" style="display:none">
+
+
+		<div class="container-fluid" id="inicio" onchange="aplicarFiltro()">
+			<div class="row">
+				<div class="col-6">
+						<h4 style="color: #047afc;">ESTADO</h4>
+						<form>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" class="custom-control-input" id="desierta" name="estado" value="Desierta" checked>
+								<label class="custom-control-label" for="desierta">Desierta</label>
+							</div>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" class="custom-control-input" id="negociada" name="estado" value="Negociada">
+								<label class="custom-control-label" for="negociada">Negociada</label>
+							</div>
+						</form>
+				</div>
+			</div>
+			<br>
+			<div class="row" id="divOpcionesAGE">
+				<div class="col-4">
+					<h4 style="color: #047afc;">AVALADO</h4>
+					<form class="fontsmall">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="cpd" name="estado" value="CPD">
+							<label class="custom-control-label" for="cpd">CPD</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="echeq" name="estado" value="ECHEQ">
+							<label class="custom-control-label" for="echeq">ECHEQ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="pag" name="estado" value="PAGARE">
+							<label class="custom-control-label" for="pag">PAGARÉ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="todos" name="estado" value="Todos" checked>
+							<label class="custom-control-label" for="todos">TODOS</label>
+						</div>
+					</form>
+				</div>
+				<div class="col-4">
+					<h4 style="color: #047afc;">NO GARANTIZADO</h4>
+					<form class="fontsmall">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_CPD" name="estado" value="CPD_NG">
+							<label class="custom-control-label" for="NG_CPD">CPD</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_ECHEQ" name="estado" value="ECHEQ_NG">
+							<label class="custom-control-label" for="NG_ECHEQ">ECHEQ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_FCE" name="estado" value="FCE">
+							<label class="custom-control-label" for="NG_FCE">FCE</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_PAGARE" name="estado" value="PAGARE_NG">
+							<label class="custom-control-label" for="NG_PAGARE">PAGARÉ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_TODOS" name="estado" value="Todos_NG">
+							<label class="custom-control-label" for="NG_TODOS">TODOS</label>
+						</div>
+					</form>
+				</div>
+				<div class="col-4">
+					<h4 style="color: #047afc;">E.PYME</h4>
+					<form class="fontsmall">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NGE_CPD" name="estado" value="CPD_NGE">
+							<label class="custom-control-label" for="NGE_CPD">CPD</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NGE_ECHEQ" name="estado" value="ECHEQ_NGE">
+							<label class="custom-control-label" for="NGE_ECHEQ">ECHEQ</label>
+					 </div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NGE_TODOS" name="estado" value="Todos_NGE">
+							<label class="custom-control-label" for="NGE_TODOS">TODOS</label>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	<br/>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div  class="col-md-6	col-sm-12">
+				<div class="alert alert-info">
+					<h3>MONTO</h3>
+					<!-- FAMILIA DE FILTRO MONTO SE APLICA EL QUE COINSIDA CON EL FILTRO ... -->
+					<h3 data-monto="monto_cpd_des" class="ocultar">@monto_cpd_des</h3>
+					<h3 data-monto="monto_cpd_neg" class="ocultar">@monto_cpd_neg</h3>
+					<h3 data-monto="monto_echeq_des" class="ocultar">@monto_echeq_des</h3>
+					<h3 data-monto="monto_echeq_neg" class="ocultar">@monto_echeq_neg</h3>
+					<h3 data-monto="monto_pag_des" class="ocultar">@monto_pag_des</h3>
+					<h3 data-monto="monto_todos_des" class="ocultar">@monto_todos_des</h3>
+					<h3 data-monto="monto_todos_neg" class="ocultar">@monto_todos_neg</h3>
+					<h3 data-monto="monto_NG_CPD_des" class="ocultar">@monto_NG_CPD_des</h3>
+					<h3 data-monto="monto_NG_CPD_neg" class="ocultar">@monto_NG_CPD_neg</h3>
+					<h3 data-monto="monto_NG_ECHEQ_des" class="ocultar">@monto_NG_ECHEQ_des</h3>
+					<h3 data-monto="monto_NG_ECHEQ_neg" class="ocultar">@monto_NG_ECHEQ_neg</h3>
+					<h3 data-monto="monto_NG_FCE_des" class="ocultar">@monto_NG_FCE_des</h3>
+					<h3 data-monto="monto_NG_FCE_neg" class="ocultar">@monto_NG_FCE_neg</h3>
+					<h3 data-monto="monto_NG_PAGARE_des" class="ocultar">@monto_NG_PAGARE_des</h3>
+					<h3 data-monto="monto_NG_PAGARE_neg" class="ocultar">@monto_NG_PAGARE_neg</h3>
+					<h3 data-monto="monto_NG_TODOS_des" class="ocultar">@monto_NG_TODOS_des</h3>
+					<h3 data-monto="monto_NG_TODOS_neg" class="ocultar">@monto_NG_TODOS_neg</h3>
+					<h3 data-monto="monto_NGE_CPD_des" class="ocultar">@monto_NGE_CPD_des</h3>
+					<h3 data-monto="monto_NGE_CPD_neg" class="ocultar">@monto_NGE_CPD_neg</h3>
+					<h3 data-monto="monto_NGE_ECHEQ_des" class="ocultar">@monto_NGE_ECHEQ_des</h3>
+					<h3 data-monto="monto_NGE_ECHEQ_neg" class="ocultar">@monto_NGE_ECHEQ_neg</h3>
+					<h3 data-monto="monto_NGE_TODOS_des" class="ocultar">@monto_NGE_TODOS_des</h3>
+					<h3 data-monto="monto_NGE_TODOS_neg" class="ocultar">@monto_NGE_TODOS_neg</h3>
+				</div>
+			</div>
+			<div  class="col-md-6	col-sm-12">
+				<div class="alert alert-warning">
+					<h3>VALORES</h3>
+					<!-- FAMILIA DE FILTRO VALORES SE APLICA EL QUE COINSIDA CON EL FILTRO ... -->
+					<h3 data-valor="cheques_cpd_des" class="ocultar">@cheques_cpd_des</h3>
+					<h3 data-valor="cheques_cpd_neg" class="ocultar">@cheques_cpd_neg</h3>
+					<h3 data-valor="cheques_echeq_des" class="ocultar">@cheques_echeq_des</h3>
+					<h3 data-valor="cheques_echeq_neg" class="ocultar">@cheques_echeq_neg</h3>
+					<h3 data-valor="cheques_pag_des" class="ocultar">@cheques_pag_des</h3>
+					<h3 data-valor="cheques_todos_des" class="ocultar">@cheques_todos_des</h3>
+					<h3 data-valor="cheques_todos_neg" class="ocultar">@cheques_todos_neg</h3>
+					<h3 data-valor="cheques_NG_CPD_des" class="ocultar">@cheques_NG_CPD_des</h3>
+					<h3 data-valor="cheques_NG_CPD_neg" class="ocultar">@cheques_NG_CPD_neg</h3>
+					<h3 data-valor="cheques_NG_ECHEQ_des" class="ocultar">@cheques_NG_ECHEQ_des</h3>
+					<h3 data-valor="cheques_NG_ECHEQ_neg" class="ocultar">@cheques_NG_ECHEQ_neg</h3>
+					<h3 data-valor="cheques_NG_FCE_des" class="ocultar">@cheques_NG_FCE_des</h3>
+					<h3 data-valor="cheques_NG_FCE_neg" class="ocultar">@cheques_NG_FCE_neg</h3>
+					<h3 data-valor="cheques_NG_PAGARE_des" class="ocultar">@cheques_NG_PAGARE_des</h3>
+					<h3 data-valor="cheques_NG_PAGARE_neg" class="ocultar">@cheques_NG_PAGARE_neg</h3>
+					<h3 data-valor="cheques_NG_TODOS_des" class="ocultar">@cheques_NG_TODOS_des</h3>
+					<h3 data-valor="cheques_NG_TODOS_neg" class="ocultar">@cheques_NG_TODOS_neg</h3>
+					<h3 data-valor="cheques_NGE_CPD_des" class="ocultar">@cheques_NGE_CPD_des</h3>
+					<h3 data-valor="cheques_NGE_CPD_neg" class="ocultar">@cheques_NGE_CPD_neg</h3>
+					<h3 data-valor="cheques_NGE_ECHEQ_des" class="ocultar">@cheques_NGE_ECHEQ_des</h3>
+					<h3 data-valor="cheques_NGE_ECHEQ_neg" class="ocultar">@cheques_NGE_ECHEQ_neg</h3>
+					<h3 data-valor="cheques_NGE_TODOS_des" class="ocultar">@cheques_NGE_TODOS_des</h3>
+					<h3 data-valor="cheques_NGE_TODOS_neg" class="ocultar">@cheques_NGE_TODOS_neg</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div  class="col-md-8	col-sm-12">
+
+				<!-- POR CADA TABLA IZQUIERA ARMAR UN DIV ASI ACA... -->
+				<!-- DESIERTA AVALADO-->
+				<div data-tablaIzq="desierta CPD" class="ocultar">
+					@TABLA_desierta_CPD
+				</div>
+				<div data-tablaIzq="desierta ECHEQ" class="ocultar">
+					@TABLA_desierta_ECHEQ
+				</div>
+				<div data-tablaIzq="desierta PAGARE" class="ocultar">
+					@TABLA_desierta_PAGARE
+				</div>
+				<div data-tablaIzq="desierta TODOS" class="ocultar">
+					@TABLA_desierta_TODOS
+				</div>
+				<!-- DESIERTA NO GARANTIZADO-->
+				<div data-tablaIzq="desierta NG CPD" class="ocultar">
+					@TABLA_desierta_NG_CPD
+				</div>
+				<div data-tablaIzq="desierta NG ECHEQ" class="ocultar">
+					@TABLA_desierta_NG_ECHEQ
+				</div>
+				<div data-tablaIzq="desierta NG FCE" class="ocultar">
+					@TABLA_desierta_NG_FCE
+				</div>
+				<div data-tablaIzq="desierta NG PAGARE" class="ocultar">
+					@TABLA_desierta_NG_PAGARE
+				</div>
+				<div data-tablaIzq="desierta NG TODOS" class="ocultar">
+					@TABLA_desierta_NG_TODOS
+				</div>
+				<!-- DESIERTA NO GARANTIZADO EPYME-->
+				<div data-tablaIzq="desierta NGE CPD" class="ocultar">
+					@TABLA_desierta_NGE_CPD
+				</div>
+				<div data-tablaIzq="desierta NGE ECHEQ" class="ocultar">
+					@TABLA_desierta_NGE_ECHEQ
+				</div>
+				<div data-tablaIzq="desierta NGE TODOS" class="ocultar">
+					@TABLA_desierta_NGE_TODOS
+				</div>
+				<!-- NEGOCIADA AVALADO-->
+				<div data-tablaIzq="negociada CPD" class="ocultar">
+					@TABLA_negociada_CPD
+				</div>
+				<div data-tablaIzq="negociada ECHEQ" class="ocultar">
+					@TABLA_negociada_ECHEQ
+				</div>
+				<div data-tablaIzq="negociada PAGARE" class="ocultar">
+					@TABLA_negociada_PAGARE
+				</div>
+				<div data-tablaIzq="negociada TODOS" class="ocultar">
+					@TABLA_negociada_TODOS
+				</div>
+				<!-- NEGOCIADA NO GARANTIZADO-->
+				<div data-tablaIzq="negociada NG CPD" class="ocultar">
+					@TABLA_negociada_NG_CPD
+				</div>
+				<div data-tablaIzq="negociada NG ECHEQ" class="ocultar">
+					@TABLA_negociada_NG_ECHEQ
+				</div>
+				<div data-tablaIzq="negociada NG FCE" class="ocultar">
+					@TABLA_negociada_NG_FCE
+				</div>
+				<div data-tablaIzq="negociada NG PAGARE" class="ocultar">
+					@TABLA_negociada_NG_PAGARE
+				</div>
+				<div data-tablaIzq="negociada NG TODOS" class="ocultar">
+					@TABLA_negociada_NG_TODOS
+				</div>
+				<!-- NEGOCIADA NO GARANTIZADO EPYME-->
+				<div data-tablaIzq="negociada NGE CPD" class="ocultar">
+					@TABLA_negociada_NGE_CPD
+				</div>
+				<div data-tablaIzq="negociada NGE ECHEQ" class="ocultar">
+					@TABLA_negociada_NGE_ECHEQ
+				</div>
+				<div data-tablaIzq="negociada NGE TODOS" class="ocultar">
+					@TABLA_negociada_NGE_TODOS
+				</div>
+
+			</div>
+			<div  class="col-md-4	col-sm-12">
+
+				<!-- POR CADA TABLA DERECHA ARMAR UN DIV ASI ACA... -->
+				<!-- AVALADO-->
+				<div data-tablaDer="CPD" class="ocultar">
+					@TABLA_monto_CPD
+				</div>
+				<div data-tablaDer="ECHEQ" class="ocultar">
+					@TABLA_monto_ECHEQ
+				</div>
+				<div data-tablaDer="PAGARE" class="ocultar">
+					@TABLA_monto_PAGARE
+				</div>
+				<div data-tablaDer="TODOS" class="ocultar">
+					@TABLA_monto_TODOS
+				</div>
+				<!-- NO GARANTIZADO -->
+				<div data-tablaDer="NG CPD" class="ocultar">
+					@TABLA_monto_NG_CPD
+				</div>
+				<div data-tablaDer="NG ECHEQ" class="ocultar">
+					@TABLA_monto_NG_ECHEQ
+				</div>
+				<div data-tablaDer="NG FCE" class="ocultar">
+					@TABLA_monto_NG_FCE
+				</div>
+				<div data-tablaDer="NG PAGARE" class="ocultar">
+					@TABLA_monto_NG_PAGARE
+				</div>
+				<div data-tablaDer="NG TODOS" class="ocultar">
+					@TABLA_monto_NG_TODOS
+				</div>
+				<!-- NO GARANTIZADO EPYME -->
+				<div data-tablaDer="NGE CPD" class="ocultar">
+					@TABLA_monto_NGE_CPD
+				</div>
+				<div data-tablaDer="NGE ECHEQ" class="ocultar">
+					@TABLA_monto_NGE_ECHEQ
+				</div>
+				<div data-tablaDer="NGE TODOS" class="ocultar">
+					@TABLA_monto_NGE_TODOS
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<br/>
+
+	<div id="graficos">
+		<canvas id="grafico1" width="800" height="400"></canvas>
+	</div>
+
+	<!--- Footer -->
+	<footer style="background: #343a40;">
+		<div class="container-fluid padding">
+			<div class="row text-center">
+				<div class="col-12">
+					<h5 style="color:white">&copy; bavsa.com </h5>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<script src="./js/main.js"></script>
+<script src="./js/graficos.js"></script>
+
+</body>
+</html>

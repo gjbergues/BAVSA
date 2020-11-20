@@ -1,0 +1,4745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Exchange</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/b-1.6.2/b-html5-1.6.2/datatables.min.css"/>
+	<style>
+		body { padding-top: 90px; }
+		.ocultar {
+			display: none
+		}
+		.mostrar {
+			display: bock
+		}
+		.fontsmall {
+			font-size:small
+		}
+		th {
+			padding:2px !important;
+		}
+		#graficos img {
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+		}
+	</style>
+	<link rel="icon" type="image/png" href="./img/favicon.png">
+	<link href="./css/loader.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<!--<script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css">
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.png" width="40%">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#inicio">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#graficos">Graficos</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="center-screen" id="divloader">
+      <div class="loader">
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__bar"></div>
+        <div class="loader__ball"></div>
+      </div>
+      <br>
+      <font>BAVSA</font>
+  </div>
+
+<div id="main" role="main" style="display:none">
+
+
+		<div class="container-fluid" id="inicio" onchange="aplicarFiltro()">
+			<div class="row">
+				<div class="col-6">
+						<h4 style="color: #047afc;">ESTADO</h4>
+						<form>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" class="custom-control-input" id="desierta" name="estado" value="Desierta" checked>
+								<label class="custom-control-label" for="desierta">Desierta</label>
+							</div>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" class="custom-control-input" id="negociada" name="estado" value="Negociada">
+								<label class="custom-control-label" for="negociada">Negociada</label>
+							</div>
+						</form>
+				</div>
+			</div>
+			<br>
+			<div class="row" id="divOpcionesAGE">
+				<div class="col-4">
+					<h4 style="color: #047afc;">AVALADO</h4>
+					<form class="fontsmall">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="cpd" name="estado" value="CPD">
+							<label class="custom-control-label" for="cpd">CPD</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="echeq" name="estado" value="ECHEQ">
+							<label class="custom-control-label" for="echeq">ECHEQ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="pag" name="estado" value="PAGARE">
+							<label class="custom-control-label" for="pag">PAGARÉ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="todos" name="estado" value="Todos" checked>
+							<label class="custom-control-label" for="todos">TODOS</label>
+						</div>
+					</form>
+				</div>
+				<div class="col-4">
+					<h4 style="color: #047afc;">NO GARANTIZADO</h4>
+					<form class="fontsmall">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_CPD" name="estado" value="CPD_NG">
+							<label class="custom-control-label" for="NG_CPD">CPD</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_ECHEQ" name="estado" value="ECHEQ_NG">
+							<label class="custom-control-label" for="NG_ECHEQ">ECHEQ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_FCE" name="estado" value="FCE">
+							<label class="custom-control-label" for="NG_FCE">FCE</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_PAGARE" name="estado" value="PAGARE_NG">
+							<label class="custom-control-label" for="NG_PAGARE">PAGARÉ</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NG_TODOS" name="estado" value="Todos_NG">
+							<label class="custom-control-label" for="NG_TODOS">TODOS</label>
+						</div>
+					</form>
+				</div>
+				<div class="col-4">
+					<h4 style="color: #047afc;">E.PYME</h4>
+					<form class="fontsmall">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NGE_CPD" name="estado" value="CPD_NGE">
+							<label class="custom-control-label" for="NGE_CPD">CPD</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NGE_ECHEQ" name="estado" value="ECHEQ_NGE">
+							<label class="custom-control-label" for="NGE_ECHEQ">ECHEQ</label>
+					 </div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" id="NGE_TODOS" name="estado" value="Todos_NGE">
+							<label class="custom-control-label" for="NGE_TODOS">TODOS</label>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	<br/>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div  class="col-md-6	col-sm-12">
+				<div class="alert alert-info">
+					<h3>MONTO</h3>
+					<!-- FAMILIA DE FILTRO MONTO SE APLICA EL QUE COINSIDA CON EL FILTRO ... -->
+					<h3 data-monto="monto_cpd_des" class="ocultar">311.299.912,17</h3>
+					<h3 data-monto="monto_cpd_neg" class="ocultar">181.068.862,27</h3>
+					<h3 data-monto="monto_echeq_des" class="ocultar">335.657.774,32</h3>
+					<h3 data-monto="monto_echeq_neg" class="ocultar">247.481.974,54</h3>
+					<h3 data-monto="monto_pag_des" class="ocultar">7.800.006,00</h3>
+					<h3 data-monto="monto_todos_des" class="ocultar">654.757.692,49</h3>
+					<h3 data-monto="monto_todos_neg" class="ocultar">429.030.936,81</h3>
+					<h3 data-monto="monto_NG_CPD_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_CPD_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_ECHEQ_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_ECHEQ_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_FCE_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_FCE_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_PAGARE_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_PAGARE_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_TODOS_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NG_TODOS_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NGE_CPD_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NGE_CPD_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NGE_ECHEQ_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NGE_ECHEQ_neg" class="ocultar">0</h3>
+					<h3 data-monto="monto_NGE_TODOS_des" class="ocultar">0</h3>
+					<h3 data-monto="monto_NGE_TODOS_neg" class="ocultar">0</h3>
+				</div>
+			</div>
+			<div  class="col-md-6	col-sm-12">
+				<div class="alert alert-warning">
+					<h3>VALORES</h3>
+					<!-- FAMILIA DE FILTRO VALORES SE APLICA EL QUE COINSIDA CON EL FILTRO ... -->
+					<h3 data-valor="cheques_cpd_des" class="ocultar">749,00</h3>
+					<h3 data-valor="cheques_cpd_neg" class="ocultar">352,00</h3>
+					<h3 data-valor="cheques_echeq_des" class="ocultar">540,00</h3>
+					<h3 data-valor="cheques_echeq_neg" class="ocultar">335,00</h3>
+					<h3 data-valor="cheques_pag_des" class="ocultar">8,00</h3>
+					<h3 data-valor="cheques_todos_des" class="ocultar">1.297,00</h3>
+					<h3 data-valor="cheques_todos_neg" class="ocultar">694,00</h3>
+					<h3 data-valor="cheques_NG_CPD_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_CPD_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_ECHEQ_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_ECHEQ_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_FCE_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_FCE_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_PAGARE_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_PAGARE_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_TODOS_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NG_TODOS_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NGE_CPD_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NGE_CPD_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NGE_ECHEQ_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NGE_ECHEQ_neg" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NGE_TODOS_des" class="ocultar">0</h3>
+					<h3 data-valor="cheques_NGE_TODOS_neg" class="ocultar">0</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div  class="col-md-8	col-sm-12">
+
+				<!-- POR CADA TABLA IZQUIERA ARMAR UN DIV ASI ACA... -->
+				<!-- DESIERTA AVALADO-->
+				<div data-tablaIzq="desierta CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>31_60</th>
+      <th>61_90</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>151_180</th>
+      <th>181_210</th>
+      <th>211_240</th>
+      <th>241_270</th>
+      <th>271_300</th>
+      <th>301_330</th>
+      <th>331_360</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23</td>
+      <td>25.9462</td>
+      <td>25.0915</td>
+      <td>26.3784</td>
+      <td>27.2396</td>
+      <td>26.0223</td>
+      <td>27.5254</td>
+      <td>29</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afianzar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Agroaval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Alfa Pyme S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>23</td>
+      <td>27.9118</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>22.514</td>
+      <td>20</td>
+      <td>25</td>
+      <td>_</td>
+      <td>27</td>
+      <td>24.9539</td>
+      <td>28.975</td>
+      <td>27</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>33</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>_</td>
+      <td>24.0402</td>
+      <td>_</td>
+      <td>26.1053</td>
+      <td>25</td>
+      <td>34</td>
+      <td>29.1111</td>
+      <td>26.8018</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Aval Ganadero S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27.4027</td>
+      <td>28.208</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Confiables S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Don Mario S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25.9876</td>
+      <td>_</td>
+      <td>12</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>FIDEICOM.DE AFECT. ESPEC.</td>
+      <td>20</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>25</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Fidem S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>18</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Garantizar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25.0733</td>
+      <td>24</td>
+      <td>22.1556</td>
+      <td>24.7838</td>
+      <td>25.1403</td>
+      <td>27.1724</td>
+      <td>28.5818</td>
+      <td>28.5385</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>INNOVA SGR</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>29.6668</td>
+      <td>29.0005</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>MILLS S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>MOVIL S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Potenciar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24</td>
+      <td>24</td>
+      <td>20</td>
+      <td>22.3912</td>
+      <td>24</td>
+      <td>25.4364</td>
+      <td>27.8401</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25.7857</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Solidum S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26.5102</td>
+      <td>25</td>
+      <td>27</td>
+      <td>27</td>
+      <td>25.4177</td>
+      <td>26.5</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Union S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Vinculos S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>21.2492</td>
+      <td>25</td>
+      <td>_</td>
+      <td>32.5</td>
+      <td>27</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>1_30</th>
+      <th>31_60</th>
+      <th>61_90</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>151_180</th>
+      <th>181_210</th>
+      <th>211_240</th>
+      <th>241_270</th>
+      <th>271_300</th>
+      <th>301_330</th>
+      <th>331_360</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ALIANZA S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23.0738</td>
+      <td>22</td>
+      <td>26</td>
+      <td>23.8852</td>
+      <td>24.2005</td>
+      <td>23.5636</td>
+      <td>24.8071</td>
+      <td>22.5453</td>
+      <td>24.8612</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Affidavit S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afianzar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Alfa Pyme S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Americana de Avales S.G.R</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>17.7761</td>
+      <td>26</td>
+      <td>29</td>
+      <td>27.1429</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>27</td>
+      <td>30</td>
+      <td>_</td>
+      <td>32</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28.5397</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>29</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Aval Ganadero S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>29</td>
+      <td>28.7401</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>28</td>
+      <td>32</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>BLD Avales S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>25.3046</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Don Mario S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>30</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>FIDEICOM.DE AFECT. ESPEC.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Fondo de Garantias Bs.As.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Garantia San Juan SAPEM</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>28</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Garantizar S.G.R.</td>
+      <td>_</td>
+      <td>20</td>
+      <td>22.8406</td>
+      <td>20</td>
+      <td>_</td>
+      <td>24.2216</td>
+      <td>24.6534</td>
+      <td>26</td>
+      <td>24.0626</td>
+      <td>21.8341</td>
+      <td>26.0903</td>
+      <td>23.6387</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>INNOVA SGR</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27.6747</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23</td>
+      <td>_</td>
+      <td>29</td>
+      <td>30</td>
+      <td>27.0414</td>
+      <td>26.3981</td>
+      <td>29.385</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>MOVIL S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Potenciar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>24</td>
+      <td>30.0488</td>
+      <td>26.7213</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>RIG Avales S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Solidum S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Union S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>24</td>
+      <td>22</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Vinculos S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta PAGARE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>29.0</td>
+      <td>30.394738</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>1_30</th>
+      <th>31_60</th>
+      <th>61_90</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>151_180</th>
+      <th>181_210</th>
+      <th>211_240</th>
+      <th>241_270</th>
+      <th>271_300</th>
+      <th>301_330</th>
+      <th>331_360</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ALIANZA S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23.0738</td>
+      <td>22.1284</td>
+      <td>25.9499</td>
+      <td>24.4582</td>
+      <td>25.1543</td>
+      <td>25.34</td>
+      <td>25.3062</td>
+      <td>26.8648</td>
+      <td>27.6144</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Affidavit S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afianzar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>20</td>
+      <td>27</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Agroaval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Alfa Pyme S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>22.3333</td>
+      <td>26.8974</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Americana de Avales S.G.R</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>22.514</td>
+      <td>20</td>
+      <td>25</td>
+      <td>_</td>
+      <td>20.222</td>
+      <td>25.2682</td>
+      <td>28.9758</td>
+      <td>27.0417</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>27</td>
+      <td>30</td>
+      <td>_</td>
+      <td>32.1429</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24.0402</td>
+      <td>29</td>
+      <td>27.8211</td>
+      <td>27.9741</td>
+      <td>34</td>
+      <td>29.016</td>
+      <td>27.5073</td>
+      <td>29</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Aval Ganadero S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26.6502</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27.4027</td>
+      <td>28.6315</td>
+      <td>28.7401</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>28</td>
+      <td>32</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>BLD Avales S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>20</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>26</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Confiables S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>26.4726</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Don Mario S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28.3176</td>
+      <td>_</td>
+      <td>15.9477</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>FIDEICOM.DE AFECT. ESPEC.</td>
+      <td>_</td>
+      <td>20</td>
+      <td>21.658</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>_</td>
+      <td>25</td>
+      <td>25</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Fidem S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Fondo de Garantias Bs.As.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Garantia San Juan SAPEM</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>18</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>28</td>
+      <td>29</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Garantizar S.G.R.</td>
+      <td>_</td>
+      <td>20</td>
+      <td>22.8406</td>
+      <td>20</td>
+      <td>25.0733</td>
+      <td>24.1214</td>
+      <td>22.8866</td>
+      <td>25.6786</td>
+      <td>24.8143</td>
+      <td>25.8533</td>
+      <td>26.719</td>
+      <td>28.0394</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>INNOVA SGR</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>28</td>
+      <td>30</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27.6747</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>23.7812</td>
+      <td>_</td>
+      <td>29.6775</td>
+      <td>30</td>
+      <td>28.0323</td>
+      <td>27.1717</td>
+      <td>29.1263</td>
+      <td>_</td>
+      <td>30.6429</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>MILLS S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>MOVIL S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25.69</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Potenciar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24</td>
+      <td>24</td>
+      <td>21.8818</td>
+      <td>22.3912</td>
+      <td>24</td>
+      <td>28.5099</td>
+      <td>27.8655</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>25.7857</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>RIG Avales S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>Solidum S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25.9367</td>
+      <td>25</td>
+      <td>27</td>
+      <td>27</td>
+      <td>25.37</td>
+      <td>26.5</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>Union S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>25.6266</td>
+      <td>22</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>Vinculos S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>21.2492</td>
+      <td>25</td>
+      <td>_</td>
+      <td>32.5</td>
+      <td>27</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27</td>
+      <td>25</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- DESIERTA NO GARANTIZADO-->
+				<div data-tablaIzq="desierta NG CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta NG ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta NG PAGARE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta NG TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- DESIERTA NO GARANTIZADO EPYME-->
+				<div data-tablaIzq="desierta NGE CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta NGE ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="desierta NGE TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- NEGOCIADA AVALADO-->
+				<div data-tablaIzq="negociada CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>1_30</th>
+      <th>31_60</th>
+      <th>61_90</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>151_180</th>
+      <th>181_210</th>
+      <th>211_240</th>
+      <th>241_270</th>
+      <th>271_300</th>
+      <th>301_330</th>
+      <th>331_360</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24.0212</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28.5</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Agroaval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>33</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>_</td>
+      <td>28.5</td>
+      <td>28</td>
+      <td>28</td>
+      <td>27.5</td>
+      <td>28.1811</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>32</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Avaluar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>BANCO COMAFI S.A.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Crecer S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26.8467</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Don Mario S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>32</td>
+      <td>32</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>25</td>
+      <td>25.5</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Fdo.de Gtia.Pub. La Rioja</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Garantizar S.G.R.</td>
+      <td>22.3381</td>
+      <td>22.2318</td>
+      <td>24.1994</td>
+      <td>23.5</td>
+      <td>24</td>
+      <td>_</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>INNOVA SGR</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Intergarantias S.G.R.</td>
+      <td>_</td>
+      <td>24.75</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27</td>
+      <td>28</td>
+      <td>28.7141</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>MILLS S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>MOVIL S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Potenciar S.G.R.</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Solidum S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30.3671</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Vinculos S.G.R.</td>
+      <td>_</td>
+      <td>33.9533</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>1_30</th>
+      <th>31_60</th>
+      <th>61_90</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>151_180</th>
+      <th>181_210</th>
+      <th>211_240</th>
+      <th>241_270</th>
+      <th>271_300</th>
+      <th>301_330</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>23.5525</td>
+      <td>_</td>
+      <td>24.0648</td>
+      <td>_</td>
+      <td>26.0756</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Affidavit S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27.375</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>32</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>30</td>
+      <td>31.3334</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Avaluar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>31.5</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>BANCO COMAFI S.A.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>29.4375</td>
+      <td>29.9753</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Don Mario S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>27.25</td>
+      <td>_</td>
+      <td>28</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>27</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Fidus S.G.R.</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24.6667</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>28</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Garantizar S.G.R.</td>
+      <td>23.2518</td>
+      <td>22.8486</td>
+      <td>22.4604</td>
+      <td>24</td>
+      <td>24.0467</td>
+      <td>25.5</td>
+      <td>27</td>
+      <td>26</td>
+      <td>28.1031</td>
+      <td>28.7924</td>
+      <td>33</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>INNOVA SGR</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26.5</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Intergarantias S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27.5</td>
+      <td>28</td>
+      <td>28.7559</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>MILLS S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>MOVIL S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>33</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Potenciar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Union S.G.R.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada PAGARE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>301_330</th>
+      <th>331_360</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>0.01</td>
+      <td>0.01</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>1_30</th>
+      <th>31_60</th>
+      <th>61_90</th>
+      <th>91_120</th>
+      <th>121_150</th>
+      <th>151_180</th>
+      <th>181_210</th>
+      <th>211_240</th>
+      <th>241_270</th>
+      <th>271_300</th>
+      <th>301_330</th>
+      <th>331_360</th>
+      <th>&gt;365</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>23.5525</td>
+      <td>_</td>
+      <td>24.0391</td>
+      <td>_</td>
+      <td>26.0756</td>
+      <td>28.5</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Affidavit S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Agroaval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>33</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>24</td>
+      <td>28.5</td>
+      <td>28</td>
+      <td>27.7382</td>
+      <td>27.5</td>
+      <td>28.1811</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>32</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>30</td>
+      <td>31.3334</td>
+      <td>31</td>
+      <td>_</td>
+      <td>_</td>
+      <td>32</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>0.01</td>
+      <td>0.01</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+      <td>30</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Avaluar S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>31</td>
+      <td>31</td>
+      <td>31.5</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>BANCO COMAFI S.A.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26</td>
+      <td>25</td>
+      <td>_</td>
+      <td>27</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>31</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>26</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Crecer S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>26.8467</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>29.4375</td>
+      <td>29.9753</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Don Mario S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>27.25</td>
+      <td>28</td>
+      <td>28</td>
+      <td>29</td>
+      <td>32</td>
+      <td>32</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>25</td>
+      <td>25.5</td>
+      <td>25</td>
+      <td>27.6667</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Fdo.de Gtia.Pub. La Rioja</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Fidus S.G.R.</td>
+      <td>25</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>24.7477</td>
+      <td>_</td>
+      <td>_</td>
+      <td>27</td>
+      <td>28</td>
+      <td>28</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Garantizar S.G.R.</td>
+      <td>23.015</td>
+      <td>22.2916</td>
+      <td>23.1085</td>
+      <td>23.7415</td>
+      <td>24.0483</td>
+      <td>25.5</td>
+      <td>25.8462</td>
+      <td>26</td>
+      <td>28.1031</td>
+      <td>28.7924</td>
+      <td>33</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>INNOVA SGR</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>26.5</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Intergarantias S.G.R.</td>
+      <td>_</td>
+      <td>24.75</td>
+      <td>_</td>
+      <td>27</td>
+      <td>27.4823</td>
+      <td>28</td>
+      <td>28.7433</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>MILLS S.G.R.</td>
+      <td>_</td>
+      <td>25</td>
+      <td>26.5761</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>MOVIL S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>25</td>
+      <td>30</td>
+      <td>_</td>
+      <td>33</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Potenciar S.G.R.</td>
+      <td>24</td>
+      <td>_</td>
+      <td>_</td>
+      <td>28</td>
+      <td>28</td>
+      <td>28.8571</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>29</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Solidum S.G.R.</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>30</td>
+      <td>30.3671</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>30</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Union S.G.R.</td>
+      <td>23</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Vinculos S.G.R.</td>
+      <td>_</td>
+      <td>33.9533</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+      <td>_</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- NEGOCIADA NO GARANTIZADO-->
+				<div data-tablaIzq="negociada NG CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada NG ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada NG FCE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada NG PAGARE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada NG TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- NEGOCIADA NO GARANTIZADO EPYME-->
+				<div data-tablaIzq="negociada NGE CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada NGE ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaIzq="negociada NGE TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+
+			</div>
+			<div  class="col-md-4	col-sm-12">
+
+				<!-- POR CADA TABLA DERECHA ARMAR UN DIV ASI ACA... -->
+				<!-- AVALADO-->
+				<div data-tablaDer="CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>Desierta</th>
+      <th>Negociada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>55.845.875,78</td>
+      <td>33.344.173,13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afianzar S.G.R.</td>
+      <td>910.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Agroaval S.G.R.</td>
+      <td>1.500.000,00</td>
+      <td>1.000.000,00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Alfa Pyme S.G.R.</td>
+      <td>11.900.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>45.351.085,47</td>
+      <td>18.888.897,49</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>500.000,00</td>
+      <td>1.808.604,20</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>25.709.117,88</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Aval Ganadero S.G.R.</td>
+      <td>4.240.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>22.245.000,00</td>
+      <td>1.715.000,00</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>500.000,00</td>
+      <td>1.226.761,05</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Avaluar S.G.R.</td>
+      <td>-</td>
+      <td>1.264.496,96</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>BANCO COMAFI S.A.</td>
+      <td>-</td>
+      <td>18.204.626,13</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>1.719.074,47</td>
+      <td>12.500.000,00</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>2.500.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>1.000.000,00</td>
+      <td>3.250.000,00</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Confiables S.G.R.</td>
+      <td>830.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Crecer S.G.R.</td>
+      <td>-</td>
+      <td>4.777.940,12</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>750.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Don Mario S.G.R.</td>
+      <td>8.006.520,34</td>
+      <td>20.303.123,44</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>FIDEICOM.DE AFECT. ESPEC.</td>
+      <td>1.856.250,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>1.100.000,00</td>
+      <td>3.665.000,00</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Fdo.de Gtia.Pub. La Rioja</td>
+      <td>-</td>
+      <td>2.000.000,00</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Fidem S.G.R.</td>
+      <td>1.500.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>4.143.483,98</td>
+      <td>1.500.000,00</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Garantizar S.G.R.</td>
+      <td>42.102.046,68</td>
+      <td>8.967.703,09</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>INNOVA SGR</td>
+      <td>1.450.000,00</td>
+      <td>715.207,86</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>745.782,18</td>
+      <td>660.000,00</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>12.146.902,86</td>
+      <td>2.000.000,00</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Intergarantias S.G.R.</td>
+      <td>-</td>
+      <td>23.850.000,00</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>MILLS S.G.R.</td>
+      <td>112.488,91</td>
+      <td>1.549.610,04</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>MOVIL S.G.R.</td>
+      <td>1.585.810,00</td>
+      <td>27.162,00</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Potenciar S.G.R.</td>
+      <td>37.787.809,58</td>
+      <td>4.899.361,90</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>2.800.000,00</td>
+      <td>180.000,00</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Solidum S.G.R.</td>
+      <td>7.767.876,83</td>
+      <td>10.423.249,86</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>Union S.G.R.</td>
+      <td>675.748,17</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>Vinculos S.G.R.</td>
+      <td>12.019.039,04</td>
+      <td>2.347.945,00</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td></td>
+      <td>311.299.912,17</td>
+      <td>181.068.862,27</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>Desierta</th>
+      <th>Negociada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ALIANZA S.G.R.</td>
+      <td>1.872.700,90</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>64.478.147,43</td>
+      <td>13.581.870,44</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Affidavit S.G.R.</td>
+      <td>5.200.000,00</td>
+      <td>4.000.000,00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afianzar S.G.R.</td>
+      <td>2.000.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Alfa Pyme S.G.R.</td>
+      <td>1.500.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Americana de Avales S.G.R</td>
+      <td>3.000.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>14.987.955,72</td>
+      <td>8.293.232,50</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>7.744.072,99</td>
+      <td>5.763.679,23</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>36.667.906,38</td>
+      <td>18.188.718,36</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Aval Ganadero S.G.R.</td>
+      <td>2.000.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>9.817.500,00</td>
+      <td>7.960.000,00</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>2.850.000,00</td>
+      <td>776.437,58</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Avaluar S.G.R.</td>
+      <td>-</td>
+      <td>4.528.000,00</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>BANCO COMAFI S.A.</td>
+      <td>-</td>
+      <td>450.000,00</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>6.000.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>BLD Avales S.G.R.</td>
+      <td>250.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>1.500.000,00</td>
+      <td>500.000,00</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>300.000,00</td>
+      <td>300.000,00</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>14.744.913,39</td>
+      <td>21.817.136,00</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Don Mario S.G.R.</td>
+      <td>19.851.300,87</td>
+      <td>8.010.651,67</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>FIDEICOM.DE AFECT. ESPEC.</td>
+      <td>2.400.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>400.000,00</td>
+      <td>2.100.000,00</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Fidus S.G.R.</td>
+      <td>-</td>
+      <td>1.134.282,12</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Fondo de Garantias Bs.As.</td>
+      <td>4.521.343,40</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Garantia San Juan SAPEM</td>
+      <td>877.919,27</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>7.600.000,00</td>
+      <td>17.227.976,26</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Garantizar S.G.R.</td>
+      <td>64.606.245,50</td>
+      <td>59.747.932,53</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>INNOVA SGR</td>
+      <td>1.762.000,00</td>
+      <td>2.404.000,00</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>6.750.000,00</td>
+      <td>5.500.000,00</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>14.629.300,58</td>
+      <td>500.000,00</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Intergarantias S.G.R.</td>
+      <td>-</td>
+      <td>54.120.000,00</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>MILLS S.G.R.</td>
+      <td>-</td>
+      <td>2.000.000,00</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>MOVIL S.G.R.</td>
+      <td>905.012,48</td>
+      <td>3.245.000,00</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Potenciar S.G.R.</td>
+      <td>22.809.832,57</td>
+      <td>3.000.000,00</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>4.000.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>RIG Avales S.G.R.</td>
+      <td>110.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>Solidum S.G.R.</td>
+      <td>1.665.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>Union S.G.R.</td>
+      <td>6.550.142,84</td>
+      <td>2.333.057,85</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>Vinculos S.G.R.</td>
+      <td>1.306.480,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td></td>
+      <td>335.657.774,32</td>
+      <td>247.481.974,54</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="PAGARE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>Desierta</th>
+      <th>Negociada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>7.800.006,00</td>
+      <td>480100.0</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td></td>
+      <td>7.800.006,00</td>
+      <td>480100.0</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+<thead>
+<tr>
+      <th></th>
+      <th>Razón Social de la SGR</th>
+      <th>Desierta</th>
+      <th>Negociada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ALIANZA S.G.R.</td>
+      <td>1.872.700,90</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Acindar Pymes S.G.R.</td>
+      <td>120.324.023,21</td>
+      <td>46.926.043,57</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Affidavit S.G.R.</td>
+      <td>5.200.000,00</td>
+      <td>4.000.000,00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afianzar S.G.R.</td>
+      <td>2.910.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Agroaval S.G.R.</td>
+      <td>1.500.000,00</td>
+      <td>1.000.000,00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Alfa Pyme S.G.R.</td>
+      <td>13.400.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Americana de Avales S.G.R</td>
+      <td>3.000.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Argenpymes S.G.R.</td>
+      <td>60.339.041,19</td>
+      <td>27.182.129,99</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Aval Federal S.G.R.</td>
+      <td>8.244.072,99</td>
+      <td>7.572.283,43</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Aval Fertil S.G.R.</td>
+      <td>70.177.030,26</td>
+      <td>18.668.818,36</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Aval Ganadero S.G.R.</td>
+      <td>6.240.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Aval Rural S.G.R.</td>
+      <td>32.062.500,00</td>
+      <td>9.675.000,00</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Avales del Centro S.G.R.</td>
+      <td>3.350.000,00</td>
+      <td>2.003.198,63</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Avaluar S.G.R.</td>
+      <td>-</td>
+      <td>5.792.496,96</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>BANCO COMAFI S.A.</td>
+      <td>-</td>
+      <td>18.654.626,13</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>BANCO MARIVA S.A.</td>
+      <td>7.719.074,47</td>
+      <td>12.500.000,00</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>BLD Avales S.G.R.</td>
+      <td>250.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Campo Aval S.G.R.</td>
+      <td>4.000.000,00</td>
+      <td>500.000,00</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Confederar Nea S.G.R.</td>
+      <td>1.300.000,00</td>
+      <td>3.550.000,00</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Confiables S.G.R.</td>
+      <td>830.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Crecer S.G.R.</td>
+      <td>-</td>
+      <td>4.777.940,12</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Cuyo Aval S.G.R.</td>
+      <td>15.494.913,39</td>
+      <td>21.817.136,00</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Don Mario S.G.R.</td>
+      <td>27.857.821,21</td>
+      <td>28.313.775,11</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>FIDEICOM.DE AFECT. ESPEC.</td>
+      <td>4.256.250,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Fdo. de Gtias. del Chaco</td>
+      <td>1.500.000,00</td>
+      <td>5.765.000,00</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Fdo.de Gtia.Pub. La Rioja</td>
+      <td>-</td>
+      <td>2.000.000,00</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Fidem S.G.R.</td>
+      <td>1.500.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Fidus S.G.R.</td>
+      <td>-</td>
+      <td>1.134.282,12</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Fondo de Garantias Bs.As.</td>
+      <td>4.521.343,40</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Garantia San Juan SAPEM</td>
+      <td>877.919,27</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Garantias Bind S.G.R.</td>
+      <td>11.743.483,98</td>
+      <td>18.727.976,26</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Garantizar S.G.R.</td>
+      <td>106.708.292,18</td>
+      <td>68.715.635,62</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>INNOVA SGR</td>
+      <td>3.212.000,00</td>
+      <td>3.119.207,86</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>INTERAVALES S.G.R.</td>
+      <td>7.495.782,18</td>
+      <td>6.160.000,00</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>Integra Pymes S.G.R.</td>
+      <td>26.776.203,44</td>
+      <td>2.500.000,00</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>Intergarantias S.G.R.</td>
+      <td>-</td>
+      <td>77.970.000,00</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>MILLS S.G.R.</td>
+      <td>112.488,91</td>
+      <td>3.549.610,04</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>MOVIL S.G.R.</td>
+      <td>2.490.822,48</td>
+      <td>3.272.162,00</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>Potenciar S.G.R.</td>
+      <td>60.597.642,15</td>
+      <td>7.899.361,90</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>Pyme Aval S.G.R.</td>
+      <td>6.800.000,00</td>
+      <td>180.000,00</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>RIG Avales S.G.R.</td>
+      <td>110.000,00</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Solidum S.G.R.</td>
+      <td>9.432.876,83</td>
+      <td>10.423.249,86</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>Union S.G.R.</td>
+      <td>7.225.891,01</td>
+      <td>2.333.057,85</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>Vinculos S.G.R.</td>
+      <td>13.325.519,04</td>
+      <td>2.347.945,00</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td></td>
+      <td>654.757.692,49</td>
+      <td>429.030.936,81</td>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- NO GARANTIZADO -->
+				<div data-tablaDer="NG CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="NG ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="NG FCE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="NG PAGARE" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="NG TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<!-- NO GARANTIZADO EPYME -->
+				<div data-tablaDer="NGE CPD" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="NGE ECHEQ" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+				<div data-tablaDer="NGE TODOS" class="ocultar">
+					<table class='table table-striped table-bordered dt-responsive nowrap' style='width:100%'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>DATOS</th>
+        </tr>
+   </thead>
+    <tbody>
+    <tr>
+      <th>DATOS</th>
+      <th>OTROS</th>
+    </tr>
+  </tbody>
+</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<br/>
+
+	<div id="graficos">
+		<canvas id="grafico1" width="800" height="400"></canvas>
+	</div>
+
+	<!--- Footer -->
+	<footer style="background: #343a40;">
+		<div class="container-fluid padding">
+			<div class="row text-center">
+				<div class="col-12">
+					<h5 style="color:white">&copy; bavsa.com </h5>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<script src="./js/graficos.js"></script>
+<script src="./js/main.js"></script>
+
+</body>
+</html>
